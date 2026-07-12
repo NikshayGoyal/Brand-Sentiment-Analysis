@@ -76,6 +76,7 @@ In the mobile phone industry, understanding public sentiment across social media
 
 ### Stage 3: Brand Identification
 - **Approach**: Regex-based pattern matching with curated brand list (100+ brands)
+- **Fuzzy Matching**: Typo-tolerant brand detection using `rapidfuzz` (e.g., "Samsng" → Samsung, "Xiomi" → Xiaomi)
 - **Multilingual Support**: Hindi (Devanagari) → English brand name mapping (e.g., शाओमी → Xiaomi)
 - **Hashtag Extraction**: Detects brand mentions inside hashtags
 - **Position Tracking**: Records brand positions for brand-level sentiment mapping
@@ -83,6 +84,7 @@ In the mobile phone industry, understanding public sentiment across social media
 ### Stage 4: Sentiment Analysis (DL)
 - **Model**: Fine-tuned BERT (`ganeshkharad/gk-hinglish-sentiment` from HuggingFace)
 - **Classes**: Positive, Negative, Neutral
+- **Aspect-Based Sentiment (ABSA)**: Splits text at contrast conjunctions and analyzes sentiment per product aspect (camera, battery, display, price, etc.)
 - **Why BERT?**: Sentiment requires understanding context and word order — "not bad" should be positive, which TF-IDF cannot capture
 - **Custom Components**: PyTorch Dataset class with batch sampling for efficient GPU inference
 
@@ -98,8 +100,12 @@ In the mobile phone industry, understanding public sentiment across social media
 brand-sentiment-analysis/
 ├── README.md
 ├── requirements.txt
+├── app.py                         # Streamlit demo UI
+├── demo.py                        # CLI demo script
 ├── src/
 │   ├── brands.py                  # Brand identification (regex + multilingual)
+│   ├── fuzzy_brands.py            # Fuzzy brand matching (typo-tolerant)
+│   ├── aspect_sentiment.py        # Aspect-based sentiment analysis
 │   ├── utils.py                   # Preprocessing, language detection, translation
 │   ├── detect_script.py           # Unicode-based script detection
 │   ├── binary_classifier.py       # TF-IDF + XGBoost classifier
